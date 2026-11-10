@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <title>Connecting · ClipOps</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <main>
+    <h1>Finishing the connection…</h1>
+    <p id="msg">Sending you back to ClipOps on this computer.</p>
+  </main>
+  <script>
+    // Facebook only redirects to registered HTTPS pages, so this page forwards the
+    // sign-in result to the ClipOps app running on this computer. It only ever
+    // forwards to 127.0.0.1 and passes along just these fields.
+    (function () {
+      var allowed = ["code", "state", "error", "error_reason", "error_description"];
+      var src = new URLSearchParams(window.location.search);
+      var out = new URLSearchParams();
+      allowed.forEach(function (k) { if (src.has(k)) out.set(k, src.get(k)); });
+      if (!out.has("state")) {
+        document.getElementById("msg").textContent = "This page is only used while connecting an Instagram account in ClipOps.";
+        return;
+      }
+      window.location.replace("http://127.0.0.1:4317/oauth/instagram/callback?" + out.toString());
+    })();
+  </script>
+</body>
+</html>
